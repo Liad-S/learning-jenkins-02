@@ -28,5 +28,12 @@ pipeline {
                 }
             }
         }
+                stage('Publish') {
+            steps {
+                archiveArtifacts artifacts: 'results.xml', fingerprint: true
+                sh 'docker tag $IMAGE_NAME:$IMAGE_TAG localhost:5000/$IMAGE_NAME:$IMAGE_TAG'
+                sh 'docker push localhost:5000/$IMAGE_NAME:$IMAGE_TAG'
+            }
+        }
     }
 }
