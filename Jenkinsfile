@@ -18,15 +18,12 @@ pipeline {
                 sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
             }
         }
-        stage('Test') {
+                stage('Test') {
             steps {
                 sh 'docker run --rm -v $WORKSPACE:/app -w /app $IMAGE_NAME:$IMAGE_TAG pytest --junitxml=results.xml'
+                junit 'results.xml'
             }
-            post {
-                always {
-                    junit 'results.xml'
-                }
-            }
+        }
         }
     }
 }
